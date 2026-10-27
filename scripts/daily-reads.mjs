@@ -6,7 +6,8 @@
 //
 // Fails silently: any error means "no reads this time", never a blocked prompt.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync, unlinkSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
@@ -103,6 +104,23 @@ function saveState(state) {
   try { mkdirSync(STATE_DIR, { recursive: true }); writeFileSync(STATE_FILE, JSON.stringify(state)); } catch {}
 }
 
+// The hook can be registered twice (plugin + settings), and Claude Code runs
+// both copies in parallel. Only the first to create the lock file proceeds.
+function claimRun(sessionId, prompt) {
+  const dir = join(STATE_DIR, "locks");
+  try {
+    mkdirSync(dir, { recursive: true });
+    for (const f of readdirSync(dir)) {
+      try { if (Date.now() - statSync(join(dir, f)).mtimeMs > 36e5) unlinkSync(join(dir, f)); } catch {}
+    }
+    const key = createHash("sha1").update(`${sessionId}\n${prompt}`).digest("hex").slice(0, 16);
+    writeFileSync(join(dir, key), "", { flag: "wx" });
+    return true;
+  } catch (e) {
+    return e.code !== "EEXIST"; // if locking itself fails, don't lose the reads
+  }
+}
+
 async function search(q, token) {
   const url = `${API_BASE}/search/posts?q=${encodeURIComponent(q)}&limit=10&time=year`;
   const res = await fetch(url, {
@@ -150,6 +168,7 @@ async function main() {
   try { input = JSON.parse(readFileSync(0, "utf8") || "{}"); } catch {}
   const prompt = (input.prompt || "").trim();
   if (prompt.length < 12) return;
+  if (!claimRun(input.session_id, prompt)) return;
 
   const state = loadState();
   const now = Date.now();
@@ -171,7 +190,7 @@ async function main() {
   if (!terms.length && !session.topics.length) terms = detectStack(input.cwd || process.cwd()).slice(0, 2);
   if (!terms.length) return saveState(state);
 
-  const topic = terms.join(" ");
+  const topic = [...terms].sort().join(" "); // "redis fastapi" == "fastapi redis"
   if (session.topics.includes(topic)) return saveState(state); // already showed reads for this topic
 
   const cooling = session.lastSearch && now - session.lastSearch < CONFIG.cooldownMin * 6e4;
