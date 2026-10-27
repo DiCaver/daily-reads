@@ -154,7 +154,9 @@ function rank(posts, terms) {
 function format(terms, posts) {
   const lines = posts.map((p) => {
     const meta = [p.readTime ? `${p.readTime} min` : null, p.upvotes ? `▲${p.upvotes}` : null].filter(Boolean).join(" · ");
-    return `  • ${p.title}${meta ? ` (${meta})` : ""} → ${p.link}`;
+    // short id-only links: hook notices are plain text, so they must be easy to copy
+    const link = p.id ? `https://daily.dev/posts/${p.id}` : p.link;
+    return `  • ${p.title}${meta ? ` (${meta})` : ""} → ${link}`;
   });
   return `📖 While you wait: daily.dev reads on ${terms.join(", ")}\n${lines.join("\n")}`;
 }

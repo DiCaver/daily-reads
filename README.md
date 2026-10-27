@@ -6,7 +6,7 @@ When you send Claude a prompt, this Claude Code plugin picks out the tech topics
 
 ```
 📖 While you wait: daily.dev reads on react, vite
-  • Migrating a large React app to Vite (7 min · ▲412) → https://daily.dev/posts/...
+  • Migrating a large React app to Vite (7 min · ▲412) → https://daily.dev/posts/abc123XYZ
   • ...
 ```
 
@@ -60,3 +60,9 @@ State and cache live in `~/.claude/daily-reads/state.json`.
 ## On-demand reads
 
 The plugin also ships a skill, **`/daily-reads`**. Claude works out the topic from the current conversation and files, which is smarter than the hook's keyword list, and fetches 3 posts with a one-line explanation of why each one is relevant. The same `SKILL.md` is what's submitted to the daily.dev plugin marketplace, so it also works in Codex and Cursor. It can use the daily.dev MCP server instead of a token.
+
+### Clickable links in the desktop app
+
+The desktop app shows hook notices as plain text, so the links in them aren't clickable there. In most terminals you can Ctrl+click them.
+
+For clickable links in the desktop app, use the skill: run `/daily-reads`. The posts then appear in Claude's own reply, where the desktop app turns links into clickable ones. You also get a short reason why each post fits your task.
