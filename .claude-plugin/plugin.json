@@ -1,0 +1,17 @@
+{
+  "name": "daily-reads",
+  "version": "0.1.0",
+  "description": "Shows a few daily.dev posts related to what you're asking Claude to do, so you have something relevant to read while it works.",
+  "author": {
+    "name": "Marko Zakrajšek"
+  },
+  "homepage": "https://github.com/DiCaver/daily-reads",
+  "repository": "https://github.com/DiCaver/daily-reads",
+  "license": "MIT",
+  "keywords": [
+    "daily.dev",
+    "reading",
+    "hooks",
+    "news"
+  ]
+}

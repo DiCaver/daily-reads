@@ -1,0 +1,13 @@
+{
+  "name": "daily-reads",
+  "owner": {
+    "name": "Marko Zakrajšek"
+  },
+  "plugins": [
+    {
+      "name": "daily-reads",
+      "source": "./",
+      "description": "Relevant daily.dev posts to read while Claude works."
+    }
+  ]
+}
