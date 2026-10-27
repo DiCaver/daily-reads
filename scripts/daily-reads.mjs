@@ -117,7 +117,20 @@ async function search(q, token) {
     link: p.commentsPermalink || p.url,
     readTime: p.readTime,
     upvotes: p.numUpvotes,
+    text: [p.title, ...(p.tags || [])].join(" "),
+    summary: (p.summary || "").slice(0, 300),
   }));
+}
+
+// Search results are loose matches: put posts that mention more of the terms
+// first (title/tags count double), and drop ones that mention none (unless
+// nothing matches at all).
+function rank(posts, terms) {
+  const res = MATCHERS.filter((m) => terms.includes(m.label)).map((m) => m.re);
+  const hits = (s) => (s ? res.filter((re) => re.test(s)).length : 0);
+  const scored = posts.map((p) => ({ p, score: 2 * hits(p.text || p.title) + hits(p.summary) }));
+  const relevant = scored.filter((s) => s.score > 0);
+  return (relevant.length ? relevant : scored).sort((a, b) => b.score - a.score).map((s) => s.p);
 }
 
 function format(terms, posts) {
@@ -179,7 +192,7 @@ async function main() {
   }
   if (!posts) return saveState(state);
 
-  const fresh = posts.filter((p) => !session.shown.includes(p.id)).slice(0, CONFIG.maxPosts);
+  const fresh = rank(posts, terms).filter((p) => !session.shown.includes(p.id)).slice(0, CONFIG.maxPosts);
   session.topics.push(topic);
   if (!fresh.length) return saveState(state);
   session.shown.push(...fresh.map((p) => p.id));
