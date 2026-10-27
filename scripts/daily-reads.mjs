@@ -40,7 +40,7 @@ const VOCAB = [
   "cloudflare", "vercel", "serverless|lambda", "ci/cd|github actions|gitlab ci", "~git", "nginx", "linux",
   "observability|opentelemetry", "prometheus", "grafana", "~microservices", "~monorepo", "nx", "turborepo",
   "llm|llms", "rag", "embeddings", "vector database|vector db", "mcp|model context protocol", "ai agents|agentic",
-  "claude|claude code", "openai", "~prompt engineering", "~machine learning|ml",
+  "openai", "~prompt engineering", "~machine learning|ml",
   "~testing|unit test|unit tests", "playwright", "cypress", "jest", "vitest", "pytest", "~tdd",
   "~security|vulnerability", "oauth|oidc", "jwt", "~authentication|auth", "~performance|optimization",
   "~accessibility|a11y", "~refactoring|refactor", "~design patterns", "~clean code", "~code review",
@@ -136,7 +136,7 @@ function rank(posts, terms) {
 function format(terms, posts) {
   const lines = posts.map((p) => {
     const meta = [p.readTime ? `${p.readTime} min` : null, p.upvotes ? `▲${p.upvotes}` : null].filter(Boolean).join(" · ");
-    return `  • ${p.title}${meta ? ` (${meta})` : ""}\n    ${p.link}`;
+    return `  • ${p.title}${meta ? ` (${meta})` : ""} → ${p.link}`;
   });
   return `📖 While you wait: daily.dev reads on ${terms.join(", ")}\n${lines.join("\n")}`;
 }

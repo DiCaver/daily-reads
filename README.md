@@ -6,8 +6,7 @@ When you send Claude a prompt, this Claude Code plugin picks out the tech topics
 
 ```
 📖 While you wait: daily.dev reads on react, vite
-  • Migrating a large React app to Vite (7 min · ▲412)
-    https://app.daily.dev/posts/...
+  • Migrating a large React app to Vite (7 min · ▲412) → https://daily.dev/posts/...
   • ...
 ```
 
