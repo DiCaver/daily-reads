@@ -1,46 +1,44 @@
 # daily.dev marketplace submission draft
 
-Paste these fields into the form at daily.dev/marketplace/submit. The "About" field must not contain links or images, or the submission is rejected.
+Paste these fields into the form at daily.dev/marketplace/submit. The "About" field must not contain links or images, or the form refuses the submission.
 
 ## Name
 
-daily-reads: something to read while Claude works
+daily-reads
 
 ## Short description
 
-While your coding agent works, daily-reads shows a few daily.dev posts about exactly what you asked it to do. You get relevant reading instead of watching a spinner.
+Reading for the wait. As your agent starts a task, daily-reads shows 3 short daily.dev posts about what you just asked for, then gets on with the work. It works from your request, before any code exists. Claude Code users can make it automatic on every prompt.
 
 ## About
 
-### What it does
+### Reading for the wait, not a research step
 
-You ask Claude Code to "add caching to the FastAPI endpoints". While it works, you see:
+You ask your agent for something that will take a few minutes, like "add caching to the FastAPI endpoints". Before it starts, it shows you three short posts about that goal, then begins the work in the same turn:
 
 ```
-📖 While you wait: daily.dev reads on fastapi, caching
-  • Caching strategies for FastAPI in production (6 min · ▲310)
-  • Redis vs in-memory caching: when each one wins (8 min · ▲205)
-  • ...
+📖 While you wait: daily.dev reads on <keywords>
+  • <post title> (<reading time> min · ▲<upvotes>)
+    <daily.dev post link>
+    <one sentence on why it fits this task>
 ```
 
-The posts are shown only to you. The agent's context is untouched.
+The reads fill the wait. They never delay the task or take over the conversation.
 
-### Two ways to use it
+### What makes it different
 
-- **Automatic (Claude Code plugin):** a prompt hook recognizes tech topics in your prompt and shows up to 3 matching posts. Each topic is shown once per session and posts never repeat.
-- **On demand (agent skill, works in Claude Code, Codex and Cursor):** run the skill and the agent works out the topic from the current task and files, then gives 3 posts with a one-line reason each one is relevant.
+- **Starts from your request, not your code.** It reads the task you just gave, so it's useful at the very beginning, before there is a diff, and it works in any folder, git repository or not.
+- **Fits the time you have.** It prefers posts you can finish in 10 minutes or less, while the agent works.
+- **Light on the free tier.** One search per run, two at most, so it stays well inside the free API allowance even if you use it every day.
+- **Can be automatic.** In Claude Code, the companion plugin in the linked repository adds a prompt hook that shows matching posts on every prompt, with no command to run. Each topic is shown once per session and posts never repeat. The hook caches searches and has a monthly cap.
 
 ### Privacy first
 
-Topics are extracted locally. Only 1 or 2 generic keywords, such as "react" or "postgres", are sent to the daily.dev search API. Your prompt, code, and repository details never leave your machine.
-
-### Friendly to the free tier
-
-Searches are cached, rate-limited per session, and capped per month, so it fits within the free API allowance. Plus users can raise the limits.
+The topic is worked out locally. Only 1 or 2 generic keywords, such as "fastapi caching", are sent to the daily.dev search API. Your prompt, code, file names and repository details never leave your machine.
 
 ### Setup
 
-Create a personal access token in daily.dev settings and set it as DAILY_DEV_TOKEN. The skill can also use the daily.dev MCP server instead.
+Connect the daily.dev MCP server, or create a personal access token in daily.dev settings and set it as DAILY_DEV_TOKEN. Free accounts can create one.
 
 ## SKILL.md
 

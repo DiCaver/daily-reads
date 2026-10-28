@@ -59,7 +59,7 @@ State and cache live in `~/.claude/daily-reads/state.json`.
 
 ## On-demand reads
 
-The plugin also ships a skill, **`/daily-reads`**. Claude works out the topic from the current conversation and files, which is smarter than the hook's keyword list, and fetches 3 posts with a one-line explanation of why each one is relevant. The same `SKILL.md` is what's submitted to the daily.dev plugin marketplace, so it also works in Codex and Cursor. It can use the daily.dev MCP server instead of a token.
+The plugin also ships a skill, **`/daily-reads`**. Claude works out the topic from what you just asked for, which is smarter than the hook's keyword list, shows 3 short posts (10 minutes or less where possible) with a one-line reason each, and then gets on with the task. It uses one search, two at most. The same `SKILL.md` is what's submitted to the daily.dev plugin marketplace, so it also works in Codex and Cursor. It can use the daily.dev MCP server instead of a token.
 
 ### Clickable links in the desktop app
 
