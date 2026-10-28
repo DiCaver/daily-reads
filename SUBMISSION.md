@@ -46,4 +46,8 @@ Paste the contents of `skills/daily-reads/SKILL.md`.
 
 ## Link
 
+Leave empty. There is no separate homepage or docs site, and the SKILL.md is pasted above.
+
+## Repository
+
 https://github.com/DiCaver/daily-reads
